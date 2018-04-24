@@ -17,7 +17,6 @@ class Movie {
     var imageId: String
     var genres: [Int]
     var userMark: String?
-    var description: String?
     
     init(releaseDate: String, tagline: String, title: String, imageId: String, genres: [Int]) {
         self.releaseDate = releaseDate

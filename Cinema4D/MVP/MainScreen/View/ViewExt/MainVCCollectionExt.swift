@@ -58,5 +58,12 @@ extension MainViewController: UICollectionViewDataSource {
         if !cell.spinner.isHidden {
             cell.spinner.rotate360()
         }
+        
+        if indexPath.row > 6 && self.navigationItem.rightBarButtonItem == nil {
+            let goToTopBarItem = UIBarButtonItem(image: UIImage(named: "back_black"), style: .plain, target: self, action: #selector(moveToTop))
+            self.navigationItem.setRightBarButton(goToTopBarItem, animated: false)
+        } else if indexPath.row <= 6 {
+            self.navigationItem.rightBarButtonItem = nil
+        }
     }
 }

@@ -15,12 +15,12 @@ class MovieInnerViewController: UIViewController {
     @IBOutlet var movieTitleLbl: UILabel!
     @IBOutlet var movieInfoLbl: UILabel!
     @IBOutlet var movieDescription: UILabel!
+    @IBOutlet var closeBtn: UIButton!
     
     var movie: Movie!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationController?.navigationBar.isHidden = true
         setupMovieInfo()
     }
@@ -29,15 +29,15 @@ class MovieInnerViewController: UIViewController {
         self.imageView.loadImg(id: movie.imageId) { poster in
             self.imageView.image = poster
         }
-        self.movieTitleLbl.text = movie.title
-        self.movieDescription.text = movie.tagline
-        
-        var info = movie.releaseDate
-        self.movieInfoLbl.text = info
+        movieTitleLbl.text = movie.title
+        movieDescription.text = movie.tagline
+        movieInfoLbl.text = movie.releaseDate
+        closeBtn.crop(radius: closeBtn.frame.height / 2)
     }
-    
-    func dissmis() {
-        self.dismiss(animated: true, completion: nil)
+
+    @IBAction func closeBtnPressed(_ sender: Any) {
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func favoriteBtnPressed(_ sender: Any) {

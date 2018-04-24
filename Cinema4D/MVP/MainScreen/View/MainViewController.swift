@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import CoreData
-import Foundation
 
 class MainViewController: UIViewController {
 
@@ -52,6 +50,10 @@ class MainViewController: UIViewController {
         }
     }
     
+    @objc func moveToTop() {
+        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionViewScrollPosition.top, animated: true)
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.reloadData()
     }
@@ -60,7 +62,7 @@ class MainViewController: UIViewController {
         self.title = "Cinema 4D"
         self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 0.8549019608, blue: 0, alpha: 1)
         self.navigationController?.navigationBar.backgroundColor = #colorLiteral(red: 1, green: 0.8549019608, blue: 0, alpha: 1)
-        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.tintColor = UIColor.black
     }
     
     func setupCollectionView() {
