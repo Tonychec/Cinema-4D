@@ -20,19 +20,13 @@ class MainScreenCollectionViewCell: UICollectionViewCell {
     var row: Int!
     
     func configureCell(film: Movie, row: Int) {
+        imageView.image = nil
         spinner.isHidden = false
         spinner.rotate360()
         self.row = row
         self.title.text = film.title
         self.favoriteBtn.setBackgroundImage(UIImage(named: film.isFavorite ? "Star Yellow" : "Star Gray"), for: .normal)
         configureUI()
-        imageView.image = nil
-        imageView.loadImg(url: film.imageId, row: row) { poster, forRow in
-            if forRow == self.row {
-                self.imageView.image = poster
-                self.spinner.isHidden = true
-            }
-        }
     }
     
     func configureUI() {

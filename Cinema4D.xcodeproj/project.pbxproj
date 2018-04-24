@@ -36,6 +36,9 @@
 		CCB2171C208CF71500ED5675 /* MainProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2171B208CF71500ED5675 /* MainProtocol.swift */; };
 		CCB2171E208CF95800ED5675 /* MainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2171D208CF95800ED5675 /* MainModel.swift */; };
 		CCB21720208CF9C700ED5675 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2171F208CF9C700ED5675 /* Constants.swift */; };
+		CCCEA284208FA5F90072D277 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCEA282208FA5F80072D277 /* Image+CoreDataProperties.swift */; };
+		CCCEA285208FA5F90072D277 /* Image+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCEA283208FA5F80072D277 /* Image+CoreDataClass.swift */; };
+		CCCEA287208FA7910072D277 /* MainScreenCoreDataExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCEA286208FA7910072D277 /* MainScreenCoreDataExt.swift */; };
 		F98766EC9C742B8E198CA408 /* Pods_Cinema4D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27F81DC0F8681CFEC90EFF8 /* Pods_Cinema4D.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +76,9 @@
 		CCB2171B208CF71500ED5675 /* MainProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProtocol.swift; sourceTree = "<group>"; };
 		CCB2171D208CF95800ED5675 /* MainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModel.swift; sourceTree = "<group>"; };
 		CCB2171F208CF9C700ED5675 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		CCCEA282208FA5F80072D277 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CCCEA283208FA5F80072D277 /* Image+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CCCEA286208FA7910072D277 /* MainScreenCoreDataExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenCoreDataExt.swift; sourceTree = "<group>"; };
 		D27F81DC0F8681CFEC90EFF8 /* Pods_Cinema4D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cinema4D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -126,6 +132,7 @@
 		CC51B7E4208C6D1F00C693D1 /* Cinema4D */ = {
 			isa = PBXGroup;
 			children = (
+				CCCEA27D208FA59B0072D277 /* CoreData */,
 				CC51B7FC208C6DA100C693D1 /* MVP */,
 				CC51B7FB208C6D8900C693D1 /* Resourses */,
 				CC51B7FA208C6D6D00C693D1 /* Source */,
@@ -220,6 +227,7 @@
 				CC51B811208C801F00C693D1 /* MainVCCollectionExt.swift */,
 				CC1DE8C3208E6C89003580BB /* MainVCProtocolExt.swift */,
 				CC1DE8C6208E6CC9003580BB /* MainVCSearchBarExt.swift */,
+				CCCEA286208FA7910072D277 /* MainScreenCoreDataExt.swift */,
 			);
 			path = ViewExt;
 			sourceTree = "<group>";
@@ -278,6 +286,15 @@
 				CCB2171F208CF9C700ED5675 /* Constants.swift */,
 			);
 			path = Singleton;
+			sourceTree = "<group>";
+		};
+		CCCEA27D208FA59B0072D277 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				CCCEA283208FA5F80072D277 /* Image+CoreDataClass.swift */,
+				CCCEA282208FA5F80072D277 /* Image+CoreDataProperties.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -419,6 +436,8 @@
 				CCB21718208CF5AB00ED5675 /* FilmImage.swift in Sources */,
 				CC1DE8C4208E6C89003580BB /* MainVCProtocolExt.swift in Sources */,
 				CCB21720208CF9C700ED5675 /* Constants.swift in Sources */,
+				CCCEA287208FA7910072D277 /* MainScreenCoreDataExt.swift in Sources */,
+				CCCEA285208FA5F90072D277 /* Image+CoreDataClass.swift in Sources */,
 				CC1DE8C2208E6734003580BB /* UIImageViewExt.swift in Sources */,
 				CC1DE8C7208E6CC9003580BB /* MainVCSearchBarExt.swift in Sources */,
 				CCB21716208CF2E500ED5675 /* Movie.swift in Sources */,
@@ -439,6 +458,7 @@
 				CC51B808208C725C00C693D1 /* MainScreenHeader.swift in Sources */,
 				CCB2171A208CF6E800ED5675 /* MainPresenter.swift in Sources */,
 				CC51B814208C9FF500C693D1 /* UIVIewBtn.swift in Sources */,
+				CCCEA284208FA5F90072D277 /* Image+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

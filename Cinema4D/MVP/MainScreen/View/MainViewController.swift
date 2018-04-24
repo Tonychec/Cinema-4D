@@ -7,10 +7,18 @@
 //
 
 import UIKit
+import CoreData
 
 class MainViewController: UIViewController {
 
     @IBOutlet var collectionView: UICollectionView!
+    
+    // dispatch queues
+    let convertQueue = dispatch_queue_create("convertQueue", DISPATCH_QUEUE_CONCURRENT)
+    let saveQueue = dispatch_queue_create("saveQueue", DISPATCH_QUEUE_CONCURRENT)
+    
+    // moc
+    var managedContext : NSManagedObjectContext?
     
     var presenter: MainPresenter!
     var movies = [Movie]()
@@ -29,14 +37,15 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.presenter = MainPresenter(view: self)
-        presenter.getPopular()
-        
-        setupCollectionView()
-        setupUI()
         
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         refreshControl.tintColor = UIColor.black
         collectionView.addSubview(refreshControl)
+        
+        coreDataSetup()
+        setupCollectionView()
+        setupUI()
+        presenter.getPopular()
     }
     
     @objc func refresh() {
