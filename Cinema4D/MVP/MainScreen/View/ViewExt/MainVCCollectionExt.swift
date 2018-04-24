@@ -19,13 +19,6 @@ extension MainViewController: UICollectionViewDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainScreenCollectionViewCell", for: indexPath) as! MainScreenCollectionViewCell
         cell.configureCell(film: movies[indexPath.row], row: indexPath.row) // todo
         
-        cell.imageView.loadImg(url: movies[indexPath.row].imageId, row: row) { poster, forRow in
-            if forRow == self.row {
-                self.imageView.image = poster
-                self.spinner.isHidden = true
-            }
-        }
-        
         return cell
     }
     
@@ -43,7 +36,7 @@ extension MainViewController: UICollectionViewDelegate {
 
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath)
+        openMovieInfo(movieRow: indexPath.row)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

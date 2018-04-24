@@ -8,17 +8,11 @@
 
 import UIKit
 import CoreData
+import Foundation
 
 class MainViewController: UIViewController {
 
     @IBOutlet var collectionView: UICollectionView!
-    
-    // dispatch queues
-    let convertQueue = dispatch_queue_create("convertQueue", DISPATCH_QUEUE_CONCURRENT)
-    let saveQueue = dispatch_queue_create("saveQueue", DISPATCH_QUEUE_CONCURRENT)
-    
-    // moc
-    var managedContext : NSManagedObjectContext?
     
     var presenter: MainPresenter!
     var movies = [Movie]()
@@ -42,7 +36,6 @@ class MainViewController: UIViewController {
         refreshControl.tintColor = UIColor.black
         collectionView.addSubview(refreshControl)
         
-        coreDataSetup()
         setupCollectionView()
         setupUI()
         presenter.getPopular()
@@ -89,6 +82,11 @@ class MainViewController: UIViewController {
         let genreVC = storyboard.instantiateViewController(withIdentifier: "GenreScreenViewController")
         self.navigationController?.pushViewController(genreVC, animated: true)
     }
+    
+    func openMovieInfo(movieRow: Int) {
+        let storyboard = UIStoryboard(name: "MovieInner", bundle: nil)
+        let movieVC = storyboard.instantiateViewController(withIdentifier: "MovieInnerViewController") as! MovieInnerViewController
+        movieVC.movie = self.movies[movieRow]
+        self.navigationController?.pushViewController(movieVC, animated: true)
+    }
 }
-
-

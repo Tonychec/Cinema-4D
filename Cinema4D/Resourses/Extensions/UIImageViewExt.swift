@@ -11,17 +11,28 @@ import Alamofire
 import AlamofireImage
 
 extension UIImageView {
-    func loadImg(url: String?, row: Int, completion: @escaping ((UIImage, Int) -> ())) {
-        if let url = url, let imageUrl = URL(string: Constants.sharedInstance.URL_IMG + url) {
-            Alamofire.request(imageUrl).responseImage { response in
-                if let image = response.result.value {
-                    completion(image, row)
-                } else {
-                    completion(UIImage(named: "placeholderImage")!, row)
-                }
-            }
+    func loadImg(id: String, row: Int, completion: @escaping ((UIImage, Int) -> ())) {
+        self.loadImg(id: id) { poster in
+            completion(poster, row)
+        }
+    }
+    
+    func loadImg(id: String, completion: @escaping ((UIImage) -> ())) {
+        if let image = CoreDataManager.shared.getImage(id: id) {
+            completion(image)
         } else {
-            completion(UIImage(named: "placeholderImage")!, row)
+            if let imageUrl = URL(string: Constants.sharedInstance.URL_IMG + id) {
+                Alamofire.request(imageUrl).responseImage { response in
+                    if let image = response.result.value {
+                        CoreDataManager.shared.saveImg(image: image, id: id)
+                        completion(image)
+                    } else {
+                        completion(UIImage(named: "placeholderImage")!)
+                    }
+                }
+            } else {
+                completion(UIImage(named: "placeholderImage")!)
+            }
         }
     }
 }
