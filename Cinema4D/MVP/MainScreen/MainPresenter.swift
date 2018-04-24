@@ -49,4 +49,21 @@ class MainPresenter {
             }
         }
     }
+    
+    func getGenres() {
+        model.getGenre { error in
+            if let error = error {
+                self.view.show(error)
+            } else {
+                if let filters = CoreDataManager.shared.getFilters() {
+                    self.view.fillFilters(filters)
+                }
+            }
+        }
+    }
+    
+    func updateGenreState(id: String, isSelected: Bool) {
+        print("update")
+        CoreDataManager.shared.updateGenre(id: id, isSelected: isSelected)
+    }
 }

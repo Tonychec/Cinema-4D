@@ -9,6 +9,7 @@
 protocol MainProtocol {
     func show(_ error: String)
     func fill(_ movies: [Movie])
+    func fillFilters(_ filters: [Filter])
     func add(_ movies: [Movie])
     func startLoading()
     func endLoading()

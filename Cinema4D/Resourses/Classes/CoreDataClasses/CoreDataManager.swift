@@ -66,6 +66,66 @@ class CoreDataManager {
         } catch {
         }
     }
+    
+    func saveGenre(genre: Filter) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "GenreFilter")
+        request.predicate = NSPredicate(format: "id == %@", genre.id)
+        do {
+            let result = try appDelegate.getManagedContext().fetch(request) as! [GenreFilter]
+            if result.isEmpty {
+                let context = appDelegate.getManagedContext()
+                let entity = NSEntityDescription.entity(forEntityName: "GenreFilter", in: context)
+                let newRecord = NSManagedObject(entity: entity!, insertInto: context)
+                newRecord.setValue(genre.id, forKey: "id")
+                newRecord.setValue(genre.title, forKey: "title")
+                newRecord.setValue(genre.isSelected, forKey: "isSelected")
+                appDelegate.saveContext()
+            } else {
+            }
+        } catch {
+        }
+    }
+    
+    func updateGenre(id: String, isSelected: Bool) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "GenreFilter")
+        request.predicate = NSPredicate(format: "id == %@", id)
+        do {
+            let result = try appDelegate.getManagedContext().fetch(request) as! [GenreFilter]
+            if !result.isEmpty {
+                result[0].setValue(isSelected, forKey: "isSelected")
+                appDelegate.saveContext()
+            }
+        } catch {
+        }
+    }
+    
+    func getFilters() -> [Filter]? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "GenreFilter")
+        do {
+            let result = try appDelegate.getManagedContext().fetch(request) as! [GenreFilter]
+            var filters = [Filter]()
+            for item in result {
+                filters.append(Filter(title: item.title!, id: item.id!, isSelected: item.isSelected))
+            }
+            return filters
+        } catch {
+            return nil
+        }
+    }
+    
+    // todo: need to use!
+    func clearFilters() {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Image")
+        do {
+            let context = appDelegate.getManagedContext()
+            let result = try context.fetch(request) as! [Image]
+            for search in result {
+                context.delete(search)
+            }
+            appDelegate.saveContext()
+        } catch {
+        }
+    }
 }
 
 

@@ -29,6 +29,7 @@ class MovieInnerViewController: UIViewController {
         self.imageView.loadImg(id: movie.imageId) { poster in
             self.imageView.image = poster
         }
+        self.favoriteBtn.setBackgroundImage(UIImage(named: movie.isFavorite ? "Star Yellow" : "Star Gray"), for: .normal)
         movieTitleLbl.text = movie.title
         movieDescription.text = movie.tagline
         movieInfoLbl.text = movie.releaseDate

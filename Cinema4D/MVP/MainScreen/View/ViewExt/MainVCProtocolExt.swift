@@ -28,6 +28,11 @@ extension MainViewController: MainProtocol {
         collectionView.reloadData()
     }
     
+    func fillFilters(_ filters: [Filter]) {
+        self.filters = filters
+        collectionView.reloadData()
+    }
+    
     func add(_ movies: [Movie]) {
         if movies.count < 20 {
             isLastLoaded = true

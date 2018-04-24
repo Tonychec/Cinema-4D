@@ -10,15 +10,22 @@ import Alamofire
 import SwiftyJSON
 
 class MainModel {
-    func getGenre() {
+    func getGenre(completion: @escaping((String?) -> ())) {
         let request = Alamofire.request(Constants.sharedInstance.URL_GENRE, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil)
         request.responseJSON { apiResponse in
+            
             switch apiResponse.result {
             case .success(let value):
                 let json = JSON(value)
-                print(json)
-            default:
-                break
+                for item in json["genres"].arrayValue {
+                    CoreDataManager.shared.saveGenre(genre: Filter(title: item["name"].stringValue,
+                                                                   id: item["id"].stringValue,
+                                                                   isSelected: false))
+                }
+                completion(nil)
+            case.failure(let error):
+                let json = JSON(error)
+                completion(json["status_message"].stringValue)
             }
         }
     }

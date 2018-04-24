@@ -18,6 +18,8 @@ class MainScreenHeader: UICollectionReusableView {
     @IBOutlet var genreFilterLbls: [UILabel]!
     
     var openGenreSelection: (()->())?
+    var filters = [Filter]()
+    var updateFilterState: ((String, Bool) ->())?
 
     func configureHeader() {
         configureUI()
@@ -28,23 +30,21 @@ class MainScreenHeader: UICollectionReusableView {
         segmentedController.setTitleTextAttributes([NSAttributedStringKey.foregroundColor : UIColor.black], for: .selected)
         segmentedController.setTitleTextAttributes([NSAttributedStringKey.foregroundColor : UIColor.lightGray], for: .normal)
         setupSwitcherDeviderPoz()
-        setupGenres()
+        if !filters.isEmpty {
+            setupGenres()
+        }
     }
     
     func setupGenres() {
         for index in 0...2 {
-            genreFilterViews[index].configureBtn(state: GenreSingleton.sharedInstance.genres[index].state, action: {
-                if GenreSingleton.sharedInstance.genres[index].state == .normal {
-                    GenreSingleton.sharedInstance.genres[index].state = .selected
-                    self.genreFilterViews[index].btnState = .selected
-                } else if GenreSingleton.sharedInstance.genres[index].state == .selected {
-                    GenreSingleton.sharedInstance.genres[index].state = .normal
-                    self.genreFilterViews[index].btnState = .normal
-                }
+            genreFilterViews[index].configureBtn(state: filters[index].isSelected ? .selected : .normal, action: {
+                self.filters[index].isSelected = !self.filters[index].isSelected
+                self.updateFilterState?(self.filters[index].id, !self.filters[index].isSelected)
+                self.genreFilterViews[index].btnState = self.filters[index].isSelected ? .selected : .normal
                 self.updateGenreLblColors()
             })
-            genreFilterLbls[index].textColor = GenreSingleton.sharedInstance.genres[index].state == .normal ? UIColor.white : UIColor.black
-            genreFilterLbls[index].text = GenreSingleton.sharedInstance.genres[index].title
+            genreFilterLbls[index].textColor = filters[index].isSelected ? UIColor.black : UIColor.white
+            genreFilterLbls[index].text = filters[index].title
         }
         genreFilterViews[3].configureBtn(state: .genre, action: {
             self.openGenreSelection?()
@@ -52,11 +52,11 @@ class MainScreenHeader: UICollectionReusableView {
         genreFilterLbls[3].textColor = UIColor.black
         genreFilterLbls[3].text = "Genre"
     }
-    
+
     func updateGenreLblColors() {
-        genreFilterLbls[0].textColor = GenreSingleton.sharedInstance.genres[0].state == .normal ? UIColor.white : UIColor.black
-        genreFilterLbls[1].textColor = GenreSingleton.sharedInstance.genres[1].state == .normal ? UIColor.white : UIColor.black
-        genreFilterLbls[2].textColor = GenreSingleton.sharedInstance.genres[2].state == .normal ? UIColor.white : UIColor.black
+        genreFilterLbls[0].textColor = filters[0].isSelected ? UIColor.black : UIColor.white
+        genreFilterLbls[1].textColor = filters[1].isSelected ? UIColor.black : UIColor.white
+        genreFilterLbls[2].textColor = filters[2].isSelected ? UIColor.black : UIColor.white
     }
     
     func setupSwitcherDeviderPoz() {

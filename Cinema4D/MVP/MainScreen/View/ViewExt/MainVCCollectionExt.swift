@@ -25,6 +25,8 @@ extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView", for: indexPath) as! MainScreenHeader
+        headerView.filters = self.filters
+        headerView.updateFilterState = self.updateFilterState
         headerView.configureHeader()
         headerView.topView.crop(width: collectionView.frame.width, corners: [.bottomLeft, .bottomRight], radius: 15)
         headerView.openGenreSelection = self.openGenreSelection

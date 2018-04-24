@@ -13,13 +13,17 @@ class GenreScreenViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var headerView: UIView!
     
+    var presenter: GenreScreenPresenter!
     var callback: (() -> ())?
+    var filters = [Filter]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.presenter = GenreScreenPresenter(view: self)
 
         configureUI()
         configureTableView()
+        presenter.getGenre()
     }
     
     func configureUI() {

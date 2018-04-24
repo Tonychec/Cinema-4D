@@ -18,12 +18,19 @@ class MainViewController: UIViewController {
     var refreshControl = UIRefreshControl()
     var screenState: ScreenState = .popular
     var searchString = ""
+    var filters = [Filter]()
     
     enum ScreenState {
         case searchPopular
         case searchFavorite
         case popular
         case favorite
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if presenter != nil {
+            presenter.getGenres()
+        }
     }
     
     override func viewDidLoad() {
@@ -36,6 +43,7 @@ class MainViewController: UIViewController {
         
         setupCollectionView()
         setupUI()
+        presenter.getGenres()
         presenter.getPopular()
     }
     
@@ -90,5 +98,9 @@ class MainViewController: UIViewController {
         let movieVC = storyboard.instantiateViewController(withIdentifier: "MovieInnerViewController") as! MovieInnerViewController
         movieVC.movie = self.movies[movieRow]
         self.navigationController?.pushViewController(movieVC, animated: true)
+    }
+    
+    func updateFilterState(id: String, isSelected: Bool) {
+        CoreDataManager.shared.updateGenre(id: id, isSelected: isSelected)
     }
 }
