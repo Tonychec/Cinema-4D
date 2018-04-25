@@ -13,6 +13,7 @@ extension GenreScreenViewController: UITableViewDelegate {
         self.filters[indexPath.row].isSelected = !self.filters[indexPath.row].isSelected
         self.presenter.updateGenreState(id: filters[indexPath.row].id, isSelected: filters[indexPath.row].isSelected)
         tableView.reloadRows(at: [indexPath], with: .none)
+        isNeedCallback = true
     }
 }
 

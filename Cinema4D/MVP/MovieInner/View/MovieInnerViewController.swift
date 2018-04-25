@@ -18,10 +18,13 @@ class MovieInnerViewController: UIViewController {
     @IBOutlet var closeBtn: UIButton!
     
     var movie: Movie!
+    private var presenter: MovieInnerPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
+        self.presenter = MovieInnerPresenter(view: self)
+        
         setupMovieInfo()
     }
     
@@ -29,7 +32,7 @@ class MovieInnerViewController: UIViewController {
         self.imageView.loadImg(id: movie.imageId) { poster in
             self.imageView.image = poster
         }
-        self.favoriteBtn.setBackgroundImage(UIImage(named: movie.isFavorite ? "Star Yellow" : "Star Gray"), for: .normal)
+        favoriteBtn.setBackgroundImage(UIImage(named: movie.isFavorite ? "Star Yellow" : "Star Gray"), for: .normal)
         movieTitleLbl.text = movie.title
         movieDescription.text = movie.tagline
         movieInfoLbl.text = movie.releaseDate
@@ -42,6 +45,16 @@ class MovieInnerViewController: UIViewController {
     }
     
     @IBAction func favoriteBtnPressed(_ sender: Any) {
-        // todo logic
+        if movie.isFavorite {
+            presenter.removeFromFavorite(id: movie.id)
+        } else {
+            presenter.addToFavorite(film: movie)
+        }
+        movie.isFavorite = !movie.isFavorite
+        favoriteBtn.setBackgroundImage(UIImage(named: movie.isFavorite ? "Star Yellow" : "Star Gray"), for: .normal)
     }
+}
+
+extension MovieInnerViewController: MovieInnerProtocol {
+    
 }

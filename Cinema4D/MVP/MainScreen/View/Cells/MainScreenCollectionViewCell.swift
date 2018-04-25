@@ -18,6 +18,7 @@ class MainScreenCollectionViewCell: UICollectionViewCell {
     @IBOutlet var imageView: UIImageView!
     
     var row: Int!
+    var favoriteBtnAction: ((Int)->())?
     
     func configureCell(film: Movie, row: Int) {
         imageView.image = nil
@@ -43,6 +44,6 @@ class MainScreenCollectionViewCell: UICollectionViewCell {
     }
     
     @IBAction func favoriteBtnPressed(_ sender: Any) {
-        
+        favoriteBtnAction?(row)
     }
 }

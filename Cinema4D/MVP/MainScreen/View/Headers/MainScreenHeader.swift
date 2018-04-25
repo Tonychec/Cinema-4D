@@ -18,6 +18,7 @@ class MainScreenHeader: UICollectionReusableView {
     @IBOutlet var genreFilterLbls: [UILabel]!
     
     var openGenreSelection: (()->())?
+    var segmentedControllerAction: (()->())?
     var filters = [Filter]()
     var updateFilterState: ((String, Bool) ->())?
 
@@ -39,7 +40,7 @@ class MainScreenHeader: UICollectionReusableView {
         for index in 0...2 {
             genreFilterViews[index].configureBtn(state: filters[index].isSelected ? .selected : .normal, action: {
                 self.filters[index].isSelected = !self.filters[index].isSelected
-                self.updateFilterState?(self.filters[index].id, !self.filters[index].isSelected)
+                self.updateFilterState?(self.filters[index].id, self.filters[index].isSelected)
                 self.genreFilterViews[index].btnState = self.filters[index].isSelected ? .selected : .normal
                 self.updateGenreLblColors()
             })
@@ -75,5 +76,6 @@ class MainScreenHeader: UICollectionReusableView {
     
     @IBAction func segmentedPressed(_ sender: Any) {
         setupSwitcherDeviderPoz()
+        segmentedControllerAction?()
     }
 }

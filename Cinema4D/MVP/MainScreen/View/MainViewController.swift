@@ -11,6 +11,8 @@ import UIKit
 class MainViewController: UIViewController {
 
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var loadingView: UIView!
+    @IBOutlet var spinner: UIImageView!
     
     var presenter: MainPresenter!
     var movies = [Movie]()
@@ -19,6 +21,8 @@ class MainViewController: UIViewController {
     var screenState: ScreenState = .popular
     var searchString = ""
     var filters = [Filter]()
+    var favoriteMovie = [Movie]()
+    var segmentedController: UISegmentedControl!
     
     enum ScreenState {
         case searchPopular
@@ -53,8 +57,10 @@ class MainViewController: UIViewController {
             presenter.getPopular(isNextPage: false)
         case.searchPopular:
             presenter.search(searchString: searchString)
-        default:
-            break
+        case .favorite:
+            presenter.getFavorites()
+        case .searchFavorite:
+            presenter.search(searchString: searchString)
         }
     }
     
@@ -89,18 +95,46 @@ class MainViewController: UIViewController {
     
     func openGenreSelection() {
         let storyboard = UIStoryboard(name: "GenreScreen", bundle: nil)
-        let genreVC = storyboard.instantiateViewController(withIdentifier: "GenreScreenViewController")
+        let genreVC = storyboard.instantiateViewController(withIdentifier: "GenreScreenViewController") as! GenreScreenViewController
+        genreVC.callback = { self.presenter.getPopular() }
         self.navigationController?.pushViewController(genreVC, animated: true)
     }
     
     func openMovieInfo(movieRow: Int) {
         let storyboard = UIStoryboard(name: "MovieInner", bundle: nil)
         let movieVC = storyboard.instantiateViewController(withIdentifier: "MovieInnerViewController") as! MovieInnerViewController
-        movieVC.movie = self.movies[movieRow]
+        movieVC.movie = segmentedController.selectedSegmentIndex == 0 ? movies[movieRow] : favoriteMovie[movieRow]
         self.navigationController?.pushViewController(movieVC, animated: true)
     }
     
+    func segmentedControllerPressed() {
+        if segmentedController.selectedSegmentIndex == 0 {
+            self.screenState = .popular
+            presenter.getPopular()
+        } else {
+            self.screenState = .favorite
+            presenter.getFavorites()
+        }
+    }
+    
     func updateFilterState(id: String, isSelected: Bool) {
-        CoreDataManager.shared.updateGenre(id: id, isSelected: isSelected)
+        presenter.updateGenreState(id: id, isSelected: isSelected)
+    }
+    
+    func favoriteBtnPressed(row: Int) {
+        if segmentedController.selectedSegmentIndex == 0 {
+            if movies[row].isFavorite {
+                presenter.removeFromFavorite(id: movies[row].id)
+            } else {
+                presenter.addToFavorite(film: movies[row])
+            }
+        } else {
+            if favoriteMovie[row].isFavorite {
+                presenter.removeFromFavorite(id: favoriteMovie[row].id)
+            } else {
+                presenter.addToFavorite(film: favoriteMovie[row])
+            }
+        }
+        collectionView.reloadItems(at: [IndexPath(row: row, section: 0)])
     }
 }

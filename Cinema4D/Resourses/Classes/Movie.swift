@@ -12,17 +12,17 @@ class Movie {
     var addDate: NSDate?
     var isFavorite = false
     var releaseDate: String
+    var id: String
     var tagline: String
     var title: String
     var imageId: String
-    var genres: [Int]
     var userMark: String?
     
-    init(releaseDate: String, tagline: String, title: String, imageId: String, genres: [Int]) {
+    init(id: String, releaseDate: String, tagline: String, title: String, imageId: String) {
         self.releaseDate = releaseDate
         self.title = title
         self.tagline = tagline
         self.imageId = imageId
-        self.genres = genres
+        self.id = id
     }
 }

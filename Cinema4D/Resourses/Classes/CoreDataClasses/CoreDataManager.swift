@@ -113,12 +113,122 @@ class CoreDataManager {
         }
     }
     
+    func getSelectedFilterId() -> String {
+        var selectedFilterId = ""
+        
+        if let filters = self.getFilters() {
+            for item in filters {
+                if item.isSelected {
+                    selectedFilterId.append(contentsOf: "\(item.id)" + ",")
+                }
+            }
+        }
+        if selectedFilterId.last == "," {
+            selectedFilterId.removeLast()
+        }
+        return selectedFilterId
+    }
+    
     // todo: need to use!
     func clearFilters() {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Image")
         do {
             let context = appDelegate.getManagedContext()
             let result = try context.fetch(request) as! [Image]
+            for search in result {
+                context.delete(search)
+            }
+            appDelegate.saveContext()
+        } catch {
+        }
+    }
+    
+    func addToFavorite(film: Movie) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoriteMovie")
+        request.predicate = NSPredicate(format: "id == %@", film.id)
+        do {
+            let result = try appDelegate.getManagedContext().fetch(request) as! [FavoriteMovie]
+            if result.isEmpty {
+                let context = appDelegate.getManagedContext()
+                let entity = NSEntityDescription.entity(forEntityName: "FavoriteMovie", in: context)
+                let newRecord = NSManagedObject(entity: entity!, insertInto: context)
+                newRecord.setValue(film.id, forKey: "id")
+                newRecord.setValue(Date(), forKey: "addDate")
+                newRecord.setValue(true, forKey: "isFavorite")
+                newRecord.setValue(film.releaseDate, forKey: "releaseDate")
+                newRecord.setValue(film.tagline, forKey: "tagline")
+                newRecord.setValue(film.title, forKey: "title")
+                newRecord.setValue(film.imageId, forKey: "imageId")
+                newRecord.setValue(film.userMark, forKey: "userMark")
+                appDelegate.saveContext()
+            }
+        } catch {
+        }
+    }
+    
+    func removeFromFavorite(id: String) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoriteMovie")
+        request.predicate = NSPredicate(format: "id == %@", id)
+        do {
+            let context = appDelegate.getManagedContext()
+            let result = try context.fetch(request) as! [FavoriteMovie]
+            for search in result {
+                context.delete(search)
+            }
+            appDelegate.saveContext()
+        } catch {
+        }
+    }
+    
+    func getFavorites(complation: @escaping(([Movie]) -> ())) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoriteMovie")
+        do {
+            let result = try appDelegate.getManagedContext().fetch(request) as! [FavoriteMovie]
+            var movies = [Movie]()
+            for item in result {
+                let movie = Movie(id: item.id!, releaseDate: item.releaseDate!, tagline: item.tagline!,
+                                  title: item.title!, imageId: item.imageId!)
+                movie.isFavorite = true
+                if let mark = item.userMark {
+                    movie.userMark = mark
+                }
+                movie.addDate = item.addDate!
+                movies.append(movie)
+            }
+            complation(movies)
+        } catch {
+            complation([Movie]())
+        }
+    }
+    
+    func searchFavorite(searchString: String, complation: @escaping(([Movie]) -> ())) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoriteMovie")
+        request.predicate = NSPredicate(format: "title CONTAINS[c] %@", searchString)
+        do {
+            let result = try appDelegate.getManagedContext().fetch(request) as! [FavoriteMovie]
+            var movies = [Movie]()
+            for item in result {
+                let movie = Movie(id: item.id!, releaseDate: item.releaseDate!, tagline: item.tagline!,
+                                  title: item.title!, imageId: item.imageId!)
+                movie.isFavorite = true
+                if let mark = item.userMark {
+                    movie.userMark = mark
+                }
+                movie.addDate = item.addDate!
+                movies.append(movie)
+            }
+            complation(movies)
+        } catch {
+            complation([Movie]())
+        }
+    }
+    
+    // todo: need to use!
+    func clearFavorite() {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoriteMovie")
+        do {
+            let context = appDelegate.getManagedContext()
+            let result = try context.fetch(request) as! [FavoriteMovie]
             for search in result {
                 context.delete(search)
             }

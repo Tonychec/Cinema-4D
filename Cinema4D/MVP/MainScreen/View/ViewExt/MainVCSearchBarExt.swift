@@ -23,9 +23,14 @@ extension MainViewController: UISearchBarDelegate {
             }
         case .favorite, .searchFavorite:
             screenState = .searchFavorite
-            // todo
-        default:
-            break
+            if let text = searchBar.text {
+                self.searchString = text
+                if text != "" {
+                    presenter.searchInFavorite(searchString: text)
+                } else {
+                    show("Looks like the search string is empty.")
+                }
+            }
         }
     }
     
@@ -37,7 +42,8 @@ extension MainViewController: UISearchBarDelegate {
             presenter.getPopular()
         case .searchFavorite:
             screenState = .favorite
-            // todo
+            searchString = ""
+            presenter.getFavorites()
         default:
             break
         }

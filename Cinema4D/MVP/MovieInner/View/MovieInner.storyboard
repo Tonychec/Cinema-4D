@@ -35,8 +35,12 @@
                                                     <constraint firstAttribute="height" constant="400" id="vRJ-x1-SvX"/>
                                                 </constraints>
                                             </imageView>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btm-xp-6Lt">
-                                                <rect key="frame" x="342" y="410" width="17" height="22"/>
+                                            <button opaque="NO" contentMode="center" horizontalHuggingPriority="252" verticalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btm-xp-6Lt">
+                                                <rect key="frame" x="327" y="410" width="32" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="32" id="NxZ-Ko-gb9"/>
+                                                    <constraint firstAttribute="height" constant="32" id="pMG-kr-VLc"/>
+                                                </constraints>
                                                 <state key="normal" image="Star Gray"/>
                                                 <state key="selected" image="Star Yellow"/>
                                                 <connections>
@@ -44,7 +48,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCt-Fa-cI7">
-                                                <rect key="frame" x="16" y="410" width="311" height="23.5"/>
+                                                <rect key="frame" x="16" y="410" width="296" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>

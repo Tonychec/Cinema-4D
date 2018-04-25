@@ -38,19 +38,38 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pue-9T-eH9">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading_іspinner" translatesAutoresizingMaskIntoConstraints="NO" id="Cug-LL-xIf">
+                                        <rect key="frame" x="170" y="316" width="35" height="35"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.70122538526575351" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Cug-LL-xIf" firstAttribute="centerX" secondItem="pue-9T-eH9" secondAttribute="centerX" id="AVX-In-ueB"/>
+                                    <constraint firstItem="Cug-LL-xIf" firstAttribute="centerY" secondItem="pue-9T-eH9" secondAttribute="centerY" id="sEu-76-ODb"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="l0U-op-UYs" firstAttribute="top" secondItem="1Vj-Rf-Yig" secondAttribute="top" id="CUr-ew-pcm"/>
+                            <constraint firstItem="pue-9T-eH9" firstAttribute="bottom" secondItem="urn-o4-u6B" secondAttribute="bottom" id="ESf-Vm-BpB"/>
+                            <constraint firstItem="pue-9T-eH9" firstAttribute="trailing" secondItem="urn-o4-u6B" secondAttribute="trailing" id="MQY-ON-1T0"/>
                             <constraint firstItem="urn-o4-u6B" firstAttribute="bottom" secondItem="l0U-op-UYs" secondAttribute="bottom" id="Zec-pZ-Eta"/>
+                            <constraint firstItem="pue-9T-eH9" firstAttribute="leading" secondItem="urn-o4-u6B" secondAttribute="leading" id="bEY-Bq-LVL"/>
                             <constraint firstItem="l0U-op-UYs" firstAttribute="leading" secondItem="urn-o4-u6B" secondAttribute="leading" id="qHl-mo-8Su"/>
                             <constraint firstItem="urn-o4-u6B" firstAttribute="trailing" secondItem="l0U-op-UYs" secondAttribute="trailing" id="scu-4a-ioy"/>
+                            <constraint firstItem="pue-9T-eH9" firstAttribute="top" secondItem="1Vj-Rf-Yig" secondAttribute="top" id="ve6-WG-TaI"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="urn-o4-u6B"/>
                     </view>
                     <navigationItem key="navigationItem" id="lMl-lx-VnH"/>
                     <connections>
                         <outlet property="collectionView" destination="l0U-op-UYs" id="f6h-5d-L84"/>
+                        <outlet property="loadingView" destination="pue-9T-eH9" id="471-cp-5uS"/>
+                        <outlet property="spinner" destination="Cug-LL-xIf" id="Nmq-Ud-5cO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="39v-sk-Ajc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -76,4 +95,7 @@
             <point key="canvasLocation" x="-335" y="136"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="loading_іspinner" width="35" height="35"/>
+    </resources>
 </document>

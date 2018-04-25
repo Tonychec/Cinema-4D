@@ -11,13 +11,18 @@ import CoreData
 
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        if segmentedController != nil {
+            return segmentedController.selectedSegmentIndex == 0 ? movies.count : favoriteMovie.count
+        } else {
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainScreenCollectionViewCell", for: indexPath) as! MainScreenCollectionViewCell
-        cell.configureCell(film: movies[indexPath.row], row: indexPath.row) // todo
+        cell.configureCell(film: (segmentedController.selectedSegmentIndex == 0 ? movies[indexPath.row] : favoriteMovie[indexPath.row]), row: indexPath.row)
+        cell.favoriteBtnAction = self.favoriteBtnPressed
+        cell.isUserInteractionEnabled = true
         
         return cell
     }
@@ -31,6 +36,8 @@ extension MainViewController: UICollectionViewDelegate {
         headerView.topView.crop(width: collectionView.frame.width, corners: [.bottomLeft, .bottomRight], radius: 15)
         headerView.openGenreSelection = self.openGenreSelection
         headerView.searchBar.delegate = self
+        headerView.segmentedControllerAction = self.segmentedControllerPressed
+        self.segmentedController = headerView.segmentedController
         
         return headerView
     }

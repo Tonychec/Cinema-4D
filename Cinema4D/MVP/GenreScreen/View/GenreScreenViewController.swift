@@ -16,6 +16,7 @@ class GenreScreenViewController: UIViewController {
     var presenter: GenreScreenPresenter!
     var callback: (() -> ())?
     var filters = [Filter]()
+    var isNeedCallback = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,12 @@ class GenreScreenViewController: UIViewController {
         configureUI()
         configureTableView()
         presenter.getGenre()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if isNeedCallback {
+            callback?()
+        }
     }
     
     func configureUI() {
