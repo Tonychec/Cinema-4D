@@ -17,12 +17,44 @@ class MainPresenter {
     }
     
     func getPopular(isNextPage: Bool? = false) {
+        view.startLoading()
         if isNextPage! {
             pageNumber += 1
         } else {
             pageNumber = 1
         }
         model.getPopular(page: pageNumber) { response in
+            self.view.endLoading()
+            if let error = response.error {
+                self.view.show(error)
+            } else if let movies = response.movies {
+                CoreDataManager.shared.getFavorites { favorites in
+                    for index in 0..<movies.count {
+                        for item in favorites {
+                            if movies[index].id == item.id {
+                                movies[index].isFavorite = item.isFavorite
+                            }
+                        }
+                    }
+                }
+                if isNextPage! {
+                    self.view.add(movies)
+                } else {
+                    self.view.fill(movies)
+                }
+            }
+        }
+    }
+    
+    func search(searchString: String, isNextPage: Bool? = false) {
+        view.startLoading()
+        if isNextPage! {
+            pageNumber += 1
+        } else {
+            pageNumber = 1
+        }
+        model.searchMovie(page: pageNumber, searchString: searchString) { response in
+            self.view.endLoading()
             if let error = response.error {
                 self.view.show(error)
             } else if isNextPage! {
@@ -33,20 +65,44 @@ class MainPresenter {
         }
     }
     
-    func search(searchString: String, isNextPage: Bool? = false) {
-        if isNextPage! {
-            pageNumber += 1
-        } else {
-            pageNumber = 1
-        }
-        model.searchMovie(page: pageNumber, searchString: searchString) { response in
-            if let error = response.error {
+    func getGenres() {
+        model.getGenre { error in
+            if let error = error {
                 self.view.show(error)
-            } else if isNextPage! {
-                self.view.add(response.movies!)
             } else {
-                self.view.fill(response.movies!)
+                if let filters = CoreDataManager.shared.getFilters() {
+                    self.view.fillFilters(filters)
+                }
             }
+        }
+    }
+    
+    func updateGenreState(id: String, isSelected: Bool) {
+        CoreDataManager.shared.updateGenre(id: id, isSelected: isSelected)
+        getPopular()
+    }
+    
+    func addToFavorite(film: Movie) {
+        CoreDataManager.shared.addToFavorite(film: film)
+    }
+    
+    func removeFromFavorite(id: String) {
+        CoreDataManager.shared.removeFromFavorite(id: id)
+    }
+    
+    func getFavorites() {
+        view.startLoading()
+        CoreDataManager.shared.getFavorites { favorites in
+            self.view.endLoading()
+            self.view.fillFavorites(favorites)
+        }
+    }
+    
+    func searchInFavorite(searchString: String) {
+        view.startLoading()
+        CoreDataManager.shared.searchFavorite(searchString: searchString) { searchResult in
+            self.view.endLoading()
+            self.view.fillFavorites(searchResult)
         }
     }
 }

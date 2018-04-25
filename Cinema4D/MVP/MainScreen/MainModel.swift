@@ -10,15 +10,22 @@ import Alamofire
 import SwiftyJSON
 
 class MainModel {
-    func getGenre() {
+    func getGenre(completion: @escaping((String?) -> ())) {
         let request = Alamofire.request(Constants.sharedInstance.URL_GENRE, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil)
         request.responseJSON { apiResponse in
+            
             switch apiResponse.result {
             case .success(let value):
                 let json = JSON(value)
-                print(json)
-            default:
-                break
+                for item in json["genres"].arrayValue {
+                    CoreDataManager.shared.saveGenre(genre: Filter(title: item["name"].stringValue,
+                                                                   id: item["id"].stringValue,
+                                                                   isSelected: false))
+                }
+                completion(nil)
+            case.failure(let error):
+                let json = JSON(error)
+                completion(json["status_message"].stringValue)
             }
         }
     }
@@ -26,6 +33,7 @@ class MainModel {
     func getPopular(page: Int? = nil, completion: @escaping((GetMoviesApiResponse) -> ())) {
         var parameters: [String: Any] = [:]
         if let page = page { parameters["page"] = page }
+        parameters["with_genres"] = CoreDataManager.shared.getSelectedFilterId()
         
         let request = Alamofire.request(Constants.sharedInstance.URL_POPULAR, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil)
         request.responseJSON { apiResponse in
@@ -66,15 +74,11 @@ class MainModel {
     private func parsMovies(json: [JSON]) -> [Movie] {
         var movies = [Movie]()
         for item in json {
-            var movieGenres = [Int]()
-            for item in item["genre_ids"].arrayValue {
-                movieGenres.append(item.intValue)
-            }
-            movies.append(Movie(releaseDate: item["release_date"].stringValue,
+            movies.append(Movie(id: item["id"].stringValue,
+                                releaseDate: item["release_date"].stringValue,
                                 tagline: item["overview"].stringValue,
                                 title: item["title"].stringValue,
-                                imageId: item["poster_path"].stringValue,
-                                genres: movieGenres))
+                                imageId: item["poster_path"].stringValue))
         }
         return movies
     }

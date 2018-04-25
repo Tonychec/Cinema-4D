@@ -10,14 +10,10 @@ import UIKit
 
 class GenreTableViewCell: UITableViewCell {
     @IBOutlet var genretitle: UILabel!
-    @IBOutlet var filmQuantity: UILabel!
+    @IBOutlet var selectedMark: UIImageView!
     
-    func configureCell(genre: GenreFilter) {
+    func configureCell(genre: Filter) {
         genretitle.text = genre.title
-        if let counter = genre.filmCounter {
-            filmQuantity.text = "\(counter)"
-        } else {
-            filmQuantity.text = ""
-        }
+        selectedMark.isHidden = !genre.isSelected
     }
 }

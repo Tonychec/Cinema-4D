@@ -11,7 +11,3 @@ class GetMoviesApiResponse {
     var movies: [Movie]?
 }
 
-class GetGenresApiResponse {
-    var error: String?
-    var movies: [Movie]?
-}

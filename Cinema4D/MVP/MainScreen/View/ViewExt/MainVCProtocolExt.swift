@@ -28,6 +28,16 @@ extension MainViewController: MainProtocol {
         collectionView.reloadData()
     }
     
+    func fillFilters(_ filters: [Filter]) {
+        self.filters = filters
+        collectionView.reloadData()
+    }
+    
+    func fillFavorites(_ favorites: [Movie]) {
+        self.favoriteMovie = favorites
+        collectionView.reloadData()
+    }
+    
     func add(_ movies: [Movie]) {
         if movies.count < 20 {
             isLastLoaded = true
@@ -37,10 +47,13 @@ extension MainViewController: MainProtocol {
     }
     
     func startLoading() {
-        
+        self.view.isUserInteractionEnabled = false
+        self.loadingView.isHidden = false
+        self.spinner.rotate360()
     }
     
     func endLoading() {
-        
+        self.view.isUserInteractionEnabled = true
+        self.loadingView.isHidden = true
     }
 }

@@ -10,19 +10,22 @@ import UIKit
 
 extension GenreScreenViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath)
+        self.filters[indexPath.row].isSelected = !self.filters[indexPath.row].isSelected
+        self.presenter.updateGenreState(id: filters[indexPath.row].id, isSelected: filters[indexPath.row].isSelected)
+        tableView.reloadRows(at: [indexPath], with: .none)
+        isNeedCallback = true
     }
 }
 
 extension GenreScreenViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return GenreSingleton.sharedInstance.genres.count
+        return filters.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "GenreTableViewCell", for: indexPath) as! GenreTableViewCell
-        cell.configureCell(genre: GenreSingleton.sharedInstance.genres[indexPath.row])
+        cell.configureCell(genre: filters[indexPath.row])
         
         return cell
     }
